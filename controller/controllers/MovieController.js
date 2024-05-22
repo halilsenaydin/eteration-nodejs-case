@@ -1,7 +1,7 @@
 import ErrorLogConstant from "../constants/logConstants/ErrorLogConstant.js";
 import LogTypeConstant from "../constants/logConstants/LogTypeConstant.js";
 import MovieService from "../dataAccess/services/MovieService.js";
-import SuccessLogConstant from "../constants/logConstants/successLogConstant.js";
+import SuccessLogConstant from "../constants/logConstants/SuccessLogConstant.js";
 import Result from '../../core/entities/Result.js';
 import DataResult from '../../core/entities/DataResult.js';
 
