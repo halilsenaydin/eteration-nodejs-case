@@ -1,7 +1,7 @@
 import validator from 'validator';
-import Result from '../../core/entities/result.js';
+import Result from '../../core/entities/Result.js';
 import MovieMessageConstant from '../constants/messageConstants/MovieMessageConstant.js';
-import ValidatorHelper from './validatorHelper.js';
+import ValidatorHelper from './ValidatorHelper.js';
 
 export default class MovieValidator {
     constructor() { }
