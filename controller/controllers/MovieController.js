@@ -41,19 +41,19 @@ export default class Movie {
         let movies = req.data.movies;
         movieDal.addMultiple(movies)
             .then(succ => {
-                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD)
+                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD_MULTIPLE)
                 return next();
             })
             .catch(err => {
                 const log = {
                     LogTypeId: LogTypeConstant.ERROR_MOVIE,
-                    Caption: ErrorLogConstant.ERROR_MOVIE_ADD,
+                    Caption: ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE,
                     Content: JSON.stringify(err),
                     Description: JSON.stringify(movies),
                     LoggingDate: Date.now(),
                     Status: false
                 };
-                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD)
+                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE)
                 return next({ result: result, log: log });
             });
     }
@@ -87,7 +87,11 @@ export default class Movie {
         let id = req.data.movieId;
         movieDal.getById(id)
             .then(data => {
-                req.result = new DataResult(data, true, "")
+                if (data == null) {
+                    req.result = new DataResult(data, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
+                } else {
+                    req.result = new DataResult(data, true, "");
+                }
                 return next();
             })
             .catch(err => {
@@ -99,7 +103,11 @@ export default class Movie {
         let id = req.data.movieId;
         movieDal.getDtoById(id)
             .then(data => {
-                req.result = new DataResult(data, true, "");
+                if (data == null) {
+                    req.result = new DataResult(data, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
+                } else {
+                    req.result = new DataResult(data, true, "");
+                }
                 return next();
             })
             .catch(err => {
@@ -110,17 +118,17 @@ export default class Movie {
     static getAll(req, res, next) {
         movieDal.getAll()
             .then(data => {
-                req.data.movies = data;
                 req.result = new DataResult(data, true, "")
                 return next();
             })
             .catch(err => {
+                console.log(err)
                 var result = new DataResult({}, false, "")
                 return res.json(result)
             })
     }
     static getAllDto(req, res, next) {
-        movieDal.getAlDto()
+        movieDal.getAllDto()
             .then(data => {
                 req.result = new DataResult(data, true, "")
                 return next();

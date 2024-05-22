@@ -29,4 +29,15 @@ export default class GenreValidator {
         req.result = new Result(true, GenreMessageConstant.VALIDATE_GENRE);
         return next();
     }
+
+    static validateObjectId(req, res, next) {
+        let language = req.data.currentLanguage;
+        let objectId = req.data.genreId;
+        let isObjectId = ValidatorHelper.isObjectId(objectId);
+        if (isObjectId) {
+            return next();
+        }
+        let result = new Result(false, GenreMessageConstant.UNVALIDATE_OBJECT_ID[language]);
+        return res.json(result);
+    }
 }

@@ -81,6 +81,8 @@ import Authorization from '../../controller/middlewares/Authorization.js';
 import GenreController from '../../controller/controllers/GenreController.js';
 import TMDB from '../../controller/middlewares/TMDB.js';
 import CongifurationConstant from '../../controller/constants/apiConstants/CongifurationConstant.js';
+import GenreValidator from '../../controller/validators/genreValidator.js';
+import LanguageConstant from '../../controller/constants/LanguageConstant.js';
 
 // Get TMDB Data
 router.get('/GetFromTMDB',
@@ -120,15 +122,17 @@ router.post("/Add",
     // Authorization.redSecurity,
     (req, res, next) => {
         var data = {
-            genreName: req.body.genreName
+            genreName: req.body.name
         }
         const language = req.user?.currentLanguage;
         if (language == undefined) {
             data.currentLanguage = LanguageConstant.DEFAULT;
         }
+
         req.data = data;
         next()
     },
+    GenreValidator.run,
     GenreController.add,
     (req, res, next) => {
         res.json(req.result);
@@ -139,9 +143,14 @@ router.post("/Delete",
         var data = {
             genreId: req.body.genreId
         }
+        const language = req.user?.currentLanguage;
+        if (language == undefined) {
+            data.currentLanguage = LanguageConstant.DEFAULT;
+        }
         req.data = data;
         next()
     },
+    GenreValidator.validateObjectId,
     GenreController.destroy,
     (req, res, next) => {
         res.json(req.result);
@@ -166,9 +175,14 @@ router.get("/GetById/:genreId",
         var data = {
             genreId: req.params.genreId
         }
+        const language = req.user?.currentLanguage;
+        if (language == undefined) {
+            data.currentLanguage = LanguageConstant.DEFAULT;
+        }
         req.data = data;
         next()
     },
+    GenreValidator.validateObjectId,
     GenreController.getById,
     (req, res, next) => {
         res.json(req.result);

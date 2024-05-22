@@ -29,13 +29,17 @@ export default class MovieValidator {
 
             // Genre Rules
             new Result(ValidatorHelper.arrayIsNotEmpty(movie.genres), MovieMessageConstant.GENRES_NOT_EMPTY[language]),
+
+            // Title Rules
+            new Result(ValidatorHelper.isUndefined(movie.releaseDate), MovieMessageConstant.RELEASE_DATE_NOT_EMPTY[language]),
+            new Result(!validator.isEmpty(movie.releaseDate), MovieMessageConstant.RELEASE_DATE_NOT_EMPTY[language])
         ]
         return rules;
     }
 
     static run(req, res, next) {
         let language = req.data.currentLanguage;
-        const movie = { popularity: String(req.data.popularity), voteAverage: String(req.data.voteAverage), voteCount: String(req.data.voteCount), genres: req.data.genres, title: String(req.data.title) };
+        const movie = { popularity: String(req.data.popularity), voteAverage: String(req.data.voteAverage), voteCount: String(req.data.voteCount), genres: req.data.genres, title: String(req.data.title), releaseDate: String(req.data.releaseDate) };
         const rules = MovieValidator.rules(language, movie);
         let result;
         for (let index = 0; index < rules.length; index++) {
@@ -46,5 +50,16 @@ export default class MovieValidator {
         }
         req.result = new Result(true, MovieMessageConstant.VALIDATE_MOVIE[language]);
         return next();
+    }
+
+    static validateObjectId(req, res, next) {
+        let language = req.data.currentLanguage;
+        let objectId = req.data.movieId;
+        let isObjectId = ValidatorHelper.isObjectId(objectId);
+        if (isObjectId) {
+            return next();
+        }
+        let result = new Result(false, MovieMessageConstant.UNVALIDATE_OBJECT_ID[language]);
+        return res.json(result);
     }
 }

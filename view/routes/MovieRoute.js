@@ -46,7 +46,7 @@
  *                 voteAverage: 9.8
  *                 voteCount: 1903
  *                 releaseDate: 2024-05-19
- *                 genres: ["664d0d0d91a43c52b3b5dkl0", "623d0d0d91a43c52b3b5dad5"]
+ *                 genres: ["664d8705d6af6df1d4291c15", "664d8705d6af6df1d4291c23"]
  *         required: true
  *         description: Add a new Movie
  *     responses:
@@ -67,7 +67,7 @@
  *                 movieId:
  *                   type: string
  *               example:
- *                 movieId: 664d7cc427481c8ca4c5b294
+ *                 movieId: 664d8e1d7cd2cd8138028e99
  *         required: true
  *         description: Delete a movie by id
  *     responses:
@@ -98,7 +98,7 @@
  *         scheme:
  *           type: String
  *         example:
- *           664d7cc427481c8ca4c5b295
+ *           664d8e1d7cd2cd8138028e91
  *         description: Movie UID
  *     responses:
  *       200:
@@ -114,7 +114,7 @@
  *         scheme:
  *           type: String
  *         example:
- *           664d7cc427481c8ca4c5b295
+ *           664d8e1d7cd2cd8138028e91
  *         description: Movie UID
  *     responses:
  *       200:
@@ -193,9 +193,14 @@ router.post("/Delete",
         var data = {
             movieId: req.body.movieId
         }
+        const language = req.user?.currentLanguage;
+        if (language == undefined) {
+            data.currentLanguage = LanguageConstant.DEFAULT;
+        }
         req.data = data;
         next()
     },
+    MovieValidator.validateObjectId,
     MovieController.destroy,
     (req, res, next) => {
         res.json(req.result);
@@ -204,12 +209,24 @@ router.post("/Delete",
 // GET
 router.get("/GetAll",
     // Authorization.freeUser,
+    (req, res, next) => {
+        var data = {
+        }
+        req.data = data;
+        next()
+    },
     MovieController.getAll,
     (req, res, next) => {
         res.json(req.result);
     });
 router.get("/GetAllDto",
     // Authorization.freeUser,
+    (req, res, next) => {
+        var data = {
+        }
+        req.data = data;
+        next()
+    },
     MovieController.getAllDto,
     (req, res, next) => {
         res.json(req.result);
@@ -220,9 +237,14 @@ router.get("/GetById/:movieId",
         var data = {
             movieId: req.params.movieId
         }
+        const language = req.user?.currentLanguage;
+        if (language == undefined) {
+            data.currentLanguage = LanguageConstant.DEFAULT;
+        }
         req.data = data;
         next()
     },
+    MovieValidator.validateObjectId,
     MovieController.getById,
     (req, res, next) => {
         res.json(req.result);
@@ -233,9 +255,14 @@ router.get("/GetDtoById/:movieId",
         var data = {
             movieId: req.params.movieId
         }
+        const language = req.user?.currentLanguage;
+        if (language == undefined) {
+            data.currentLanguage = LanguageConstant.DEFAULT;
+        }
         req.data = data;
         next()
     },
+    MovieValidator.validateObjectId,
     MovieController.getDtoById,
     (req, res, next) => {
         res.json(req.result);

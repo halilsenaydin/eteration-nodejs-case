@@ -8,7 +8,7 @@ import swaggerSpec from './swagger.js';
 const app = express();
 const httpServer = createServer(app);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8085;
 
 app.use(cors({
     origin: [

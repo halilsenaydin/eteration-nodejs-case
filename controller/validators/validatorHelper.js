@@ -14,4 +14,11 @@ export default class ValidatorHelper {
         }
         return true;
     }
+
+    static isObjectId(objectId) {
+        if (objectId == undefined || objectId.length != 24) {
+            return false;
+        }
+        return true;
+    }
 }

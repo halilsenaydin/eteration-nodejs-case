@@ -81,7 +81,11 @@ export default class Genre {
         let id = req.data.genreId;
         genreDal.getById(id)
             .then(data => {
-                req.result = new DataResult(data, true, "")
+                if (data == null) {
+                    req.result = new DataResult(data, false, ErrorLogConstant.ERROR_GENRE_GET_BY_ID_NOT_FOUND);
+                } else {
+                    req.result = new DataResult(data, true, "");
+                }
                 return next();
             })
             .catch(err => {

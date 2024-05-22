@@ -9,6 +9,7 @@ export default class MovieService extends RepositoryBase {
     addMultiple(entityList) {
         return Movie.insertMany(entityList);
     }
+
     getAllDto() {
         const promise = this.model
             .find()

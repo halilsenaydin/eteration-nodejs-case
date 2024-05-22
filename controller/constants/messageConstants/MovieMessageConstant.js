@@ -40,4 +40,14 @@ export default class MovieMessageConstant {
         "Genres Boş Olamaz!",
         "Genres Cannot Be Empty!"
     ]
+
+    static RELEASE_DATE_NOT_EMPTY = [
+        "Release Date Boş Olamaz!",
+        "Release Date Cannot Be Empty!"
+    ]
+
+    static UNVALIDATE_OBJECT_ID = [
+        "Object Id Doğrulanamadı!",
+        "Unvalidate Object Id!"
+    ]
 }
