@@ -81,7 +81,7 @@ import Authorization from '../../controller/middlewares/Authorization.js';
 import GenreController from '../../controller/controllers/GenreController.js';
 import TMDB from '../../controller/middlewares/TMDB.js';
 import CongifurationConstant from '../../controller/constants/apiConstants/CongifurationConstant.js';
-import GenreValidator from '../../controller/validators/genreValidator.js';
+import GenreValidator from '../../controller/validators/GenreValidator.js';
 import LanguageConstant from '../../controller/constants/LanguageConstant.js';
 
 // Get TMDB Data
