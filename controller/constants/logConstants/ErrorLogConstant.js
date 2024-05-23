@@ -12,7 +12,7 @@ export default class ErrorLogConstant {
     static ERROR_GENRE_DELETE = 'Delete Genre Error!';
     static ERROR_GENRE_DELETE_NOT_FOUND_GENRE = 'Deleted Error: Genre Not Found By Genre Id!';
     static ERROR_GENRE_GET_BY_ID = 'ERROR \'Get By Id\' From Genre!';
-    static ERROR_GENRE_GET_BY_ID_NOT_FOUND = 'ERROR \'Get By Id\' Not Found!';
+    static ERROR_GENRE_GET_BY_ID_NOT_FOUND = 'Object Not Found!';
     static ERROR_GENRE_GET_ALL = 'ERROR \'Get All\'! From Genre';
 
     static ERROR_USER_ADD = 'Add User Error!';

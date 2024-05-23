@@ -1,13 +1,15 @@
 /**
  * @swagger
- * /movie/GetFromTMDB:
+ * /v1/movie/pull-tmdb-datas:
  *   get:
  *     summary: Get All movie data from TMDB for match Mongo DB
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       500:
+ *         description: Internal Server Error
  
- * /movie/Add:
+ * /v1/movie/add:
  *   post:
  *     summary: Add a new movie
  *     requestBody:
@@ -51,9 +53,13 @@
  *         description: Add a new Movie
  *     responses:
  *       200:
- *         description: Success
-
- * /movie/Delete:
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+ 
+ * /v1/movie/delete:
  *   post:
  *     summary: Delete a movie
  *     requestBody:
@@ -72,23 +78,56 @@
  *         description: Delete a movie by id
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       202:
+ *         description: Accepted, The request has been accepted for processing, but the processing has not been completed
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
 
- * /movie/GetAll:
+ * /v1/movie/movies:
  *   get:
  *     summary: Get All movie datas
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
  
- * /movie/GetAllDto:
+ * /v1/movie/movies-dto:
  *   get:
  *     summary: Get All Dto movie datas
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
  
- * /movie/GetById/{movieId}:
+ * /v1/movie/movies-dto/filter:
+ *   get:
+ *     summary: GET movie data using query
+ *     parameters:
+ *       - name: title
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: overview
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: releaseDate
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+ 
+ * /v1/movie/movies/{movieId}:
  *   get:
  *     summary: GET By Id movie data
  *     parameters:
@@ -102,9 +141,13 @@
  *         description: Movie UID
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
 
- * /movie/GetDtoById/{movieId}:
+ * /v1/movie/movies-dto/{movieId}:
  *   get:
  *     summary: GET Dto By Id movie data
  *     parameters:
@@ -118,15 +161,16 @@
  *         description: Movie UID
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
  */
 
-
 import express from 'express';
-
 const router = express.Router();
 
-import Authorization from '../../controller/middlewares/Authorization.js';
 import MovieController from '../../controller/controllers/MovieController.js';
 import GenreController from '../../controller/controllers/GenreController.js';
 import TMDB from '../../controller/middlewares/TMDB.js';
@@ -134,7 +178,7 @@ import MovieValidator from '../../controller/validators/MovieValidator.js';
 import LanguageConstant from '../../controller/constants/LanguageConstant.js';
 
 // Get TMDB Data
-router.get('/GetFromTMDB',
+router.get('/pull-tmdb-datas',
     (req, res, next) => {
         var data = {
             newMovies: [],
@@ -159,12 +203,11 @@ router.get('/GetFromTMDB',
     },
     MovieController.addMultiple,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
 
 // POST
-router.post("/Add",
-    // Authorization.redSecurity,
+router.post("/add",
     (req, res, next) => {
         var data = {
             title: req.body.title,
@@ -185,10 +228,9 @@ router.post("/Add",
     MovieValidator.run,
     MovieController.add,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
-router.post("/Delete",
-    // Authorization.redSecurity,
+router.post("/delete",
     (req, res, next) => {
         var data = {
             movieId: req.body.movieId
@@ -203,12 +245,11 @@ router.post("/Delete",
     MovieValidator.validateObjectId,
     MovieController.destroy,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
 
 // GET
-router.get("/GetAll",
-    // Authorization.freeUser,
+router.get("/movies",
     (req, res, next) => {
         var data = {
         }
@@ -217,10 +258,9 @@ router.get("/GetAll",
     },
     MovieController.getAll,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
-router.get("/GetAllDto",
-    // Authorization.freeUser,
+router.get("/movies-dto",
     (req, res, next) => {
         var data = {
         }
@@ -229,10 +269,21 @@ router.get("/GetAllDto",
     },
     MovieController.getAllDto,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
-router.get("/GetById/:movieId",
-    // Authorization.freeUser,
+router.get("/movies-dto/filter",
+    (req, res, next) => {
+        var data = {
+            query: req.query
+        }
+        req.data = data;
+        next()
+    },
+    MovieController.getAllDtoFilter,
+    (req, res, next) => {
+        res.status(200).json(req.result);
+    });
+router.get("/movies/:movieId",
     (req, res, next) => {
         var data = {
             movieId: req.params.movieId
@@ -247,10 +298,9 @@ router.get("/GetById/:movieId",
     MovieValidator.validateObjectId,
     MovieController.getById,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
-router.get("/GetDtoById/:movieId",
-    // Authorization.freeUser,
+router.get("/movies-dto/:movieId",
     (req, res, next) => {
         var data = {
             movieId: req.params.movieId
@@ -265,6 +315,6 @@ router.get("/GetDtoById/:movieId",
     MovieValidator.validateObjectId,
     MovieController.getDtoById,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
 export default router;

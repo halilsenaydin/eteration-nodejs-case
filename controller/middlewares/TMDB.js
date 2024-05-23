@@ -6,6 +6,10 @@ import DataResult from '../../core/entities/DataResult.js';
 export default class TMDB {
     static getAllMovies(req, res, next) {
         request(`${CongifurationConstant.TMDB_ROOT}/discover/movie?sort_by: release_date.asc?vote_count_gte: 1500?vote_average_gte: 8.4?watch_provider_id: 8?watch_region: TR?&api_key=${CongifurationConstant.TMDB_API_KEY}`, function (error, rensponse, body) {
+            if (error) {
+                let result = new DataResult(null, false, "TMDM Error!");
+                return res.status(500).json(result);
+            }
             let movies = JSON.parse(body).results;
             req.data.newMovies = movies;
             req.result = new DataResult(movies, true, "");
@@ -15,6 +19,10 @@ export default class TMDB {
     static getAllMovieGenres(req, res, next) {
         let genreType = req.data.genreType;
         request(`${CongifurationConstant.TMDB_ROOT}/genre/${genreType}/list?&api_key=${CongifurationConstant.TMDB_API_KEY}`, function (error, rensponse, body) {
+            if (error) {
+                let result = new DataResult(null, false, "TMDM Error!");
+                return res.status(500).json(result);
+            }
             let genres = JSON.parse(body).genres;
             req.data.newGenres = req.data.newGenres.concat(genres);
             req.result = new DataResult(req.data.newGenres, true, "");

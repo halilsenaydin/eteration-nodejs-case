@@ -45,7 +45,7 @@ export default class MovieValidator {
         for (let index = 0; index < rules.length; index++) {
             result = rules[index];
             if (!result.status) {
-                return res.json(result);
+                return res.status(400).json(result);
             }
         }
         req.result = new Result(true, MovieMessageConstant.VALIDATE_MOVIE[language]);
@@ -60,6 +60,6 @@ export default class MovieValidator {
             return next();
         }
         let result = new Result(false, MovieMessageConstant.UNVALIDATE_OBJECT_ID[language]);
-        return res.json(result);
+        return res.status(400).json(result);
     }
 }

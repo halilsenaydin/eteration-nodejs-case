@@ -17,13 +17,13 @@ export default class GenreValidator {
 
     static run(req, res, next) {
         let language = req.data.currentLanguage;
-        const genre = { name: String(req.data.name) };
+        const genre = { name: String(req.data.genreName) };
         const rules = GenreValidator.rules(language, genre);
         let result;
         for (let index = 0; index < rules.length; index++) {
             result = rules[index];
             if (!result.status) {
-                return res.json(result);
+                return res.status(400).json(result);
             }
         }
         req.result = new Result(true, GenreMessageConstant.VALIDATE_GENRE);
@@ -38,6 +38,6 @@ export default class GenreValidator {
             return next();
         }
         let result = new Result(false, GenreMessageConstant.UNVALIDATE_OBJECT_ID[language]);
-        return res.json(result);
+        return res.status(400).json(result);
     }
 }

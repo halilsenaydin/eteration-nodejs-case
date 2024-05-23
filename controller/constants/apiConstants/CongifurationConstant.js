@@ -9,4 +9,5 @@ export default class CongifurationConstant {
     static MONGO_DB_USER = "halilsenaydin"
     static MONGO_DB_USER_PASS = "lu9wtGso4PhO0Car"
     static MONGO_DB_CONNECTION_STRING = `mongodb+srv://${CongifurationConstant.MONGO_DB_USER}:${CongifurationConstant.MONGO_DB_USER_PASS}@moviels.iv7k29s.mongodb.net/${CongifurationConstant.MONGO_DB}?retryWrites=true&w=majority&appName=Moviels`
+    static MONGO_DB_TEST_CONNECTION_STRING = `mongodb+srv://${CongifurationConstant.MONGO_DB_USER}:${CongifurationConstant.MONGO_DB_USER_PASS}@moviels.iv7k29s.mongodb.net/test?retryWrites=true&w=majority&appName=Moviels`
 }

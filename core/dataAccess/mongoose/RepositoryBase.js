@@ -17,7 +17,11 @@ export default class RepositoryBase {
     }
 
     getAll() {
-        const promise = this.model.find();
+        return this.getAllFilter();
+    }
+
+    getAllFilter(condition) {
+        const promise = this.model.find(condition);
         return promise;
     }
 

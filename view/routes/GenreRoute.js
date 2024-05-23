@@ -1,13 +1,15 @@
 /**
  * @swagger
- * /genre/GetFromTMDB:
+ * /v1/genre/pull-tmdb-datas:
  *   get:
  *     summary: Get All genres data from TMDB (Movie and TV) for match Mongo DB
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       500:
+ *         description: Internal Server Error
  
- * /genre/Add:
+ * /v1/genre/add:
  *   post:
  *     summary: Add a new genre
  *     requestBody:
@@ -26,9 +28,13 @@
  *         description: Add a new Genre
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
 
- * /genre/Delete:
+ * /v1/genre/delete:
  *   post:
  *     summary: Delete a genre
  *     requestBody:
@@ -47,16 +53,41 @@
  *         description: Delete a genre by id
  *     responses:
  *       200:
- *         description: Success
-
- * /genre/GetAll:
+ *         description: Success, The request is OK
+ *       202:
+ *         description: Accepted, The request has been accepted for processing, but the processing has not been completed
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+ 
+ * /v1/genre/genres:
  *   get:
  *     summary: Get All genres datas
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       500:
+ *         description: Internal Server Error
  
- * /genre/GetById/{genreId}:
+ * /v1/genre/genres/filter:
+ *   get:
+ *     summary: GET genre data using query
+ *     parameters:
+ *       - name: name
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+
+ * /v1/genre/genres/{genreId}:
  *   get:
  *     summary: GET By Id genre data
  *     parameters:
@@ -70,14 +101,16 @@
  *         description: Genre UID
  *     responses:
  *       200:
- *         description: Success
+ *         description: Success, The request is OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
  */
 
-import express from 'express';
-
+import express, { query } from 'express';
 const router = express.Router();
 
-import Authorization from '../../controller/middlewares/Authorization.js';
 import GenreController from '../../controller/controllers/GenreController.js';
 import TMDB from '../../controller/middlewares/TMDB.js';
 import CongifurationConstant from '../../controller/constants/apiConstants/CongifurationConstant.js';
@@ -85,7 +118,7 @@ import GenreValidator from '../../controller/validators/GenreValidator.js';
 import LanguageConstant from '../../controller/constants/LanguageConstant.js';
 
 // Get TMDB Data
-router.get('/GetFromTMDB',
+router.get('/pull-tmdb-datas',
     (req, res, next) => {
         var data = {
             genres: [],
@@ -114,12 +147,11 @@ router.get('/GetFromTMDB',
     },
     GenreController.addMultiple,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
 
 // POST
-router.post("/Add",
-    // Authorization.redSecurity,
+router.post("/add",
     (req, res, next) => {
         var data = {
             genreName: req.body.name
@@ -135,10 +167,9 @@ router.post("/Add",
     GenreValidator.run,
     GenreController.add,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
-router.post("/Delete",
-    // Authorization.redSecurity,
+router.post("/delete",
     (req, res, next) => {
         var data = {
             genreId: req.body.genreId
@@ -153,12 +184,11 @@ router.post("/Delete",
     GenreValidator.validateObjectId,
     GenreController.destroy,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
 
 // GET
-router.get("/GetAll",
-    // Authorization.freeUser,
+router.get("/genres",
     (req, res, next) => {
         var data = {
         }
@@ -167,10 +197,21 @@ router.get("/GetAll",
     },
     GenreController.getAll,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
-router.get("/GetById/:genreId",
-    // Authorization.freeUser,
+router.get("/genres/filter",
+    (req, res, next) => {
+        var data = {
+            query: req.query
+        }
+        req.data = data;
+        next()
+    },
+    GenreController.getAllFilter,
+    (req, res, next) => {
+        res.status(200).json(req.result);
+    });
+router.get("/genres/:genreId",
     (req, res, next) => {
         var data = {
             genreId: req.params.genreId
@@ -185,6 +226,6 @@ router.get("/GetById/:genreId",
     GenreValidator.validateObjectId,
     GenreController.getById,
     (req, res, next) => {
-        res.json(req.result);
+        res.status(200).json(req.result);
     });
 export default router;

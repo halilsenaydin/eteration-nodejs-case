@@ -1,5 +1,4 @@
 export default class RouteConstant {
-    static MOVIE_ROUTE_ENDPOINT = "/movie"
-    static GENRE_ROUTE_ENDPOINT = "/genre"
-    static AUTH_ROUTE_ENDPOINT = "/auth";
+    static V1_MOVIE_ROUTE_ENDPOINT = "/v1/movie"
+    static V1_GENRE_ROUTE_ENDPOINT = "/v1/genre"
 }

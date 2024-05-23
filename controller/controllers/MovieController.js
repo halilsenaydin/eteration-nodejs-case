@@ -6,7 +6,7 @@ import Result from '../../core/entities/Result.js';
 import DataResult from '../../core/entities/DataResult.js';
 
 const movieDal = new MovieService();
-export default class Movie {
+export default class MovieController {
     constructor() { }
 
     static add(req, res, next) {
@@ -21,7 +21,7 @@ export default class Movie {
         }
         movieDal.add(entity)
             .then(succ => {
-                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD)
+                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD);
                 return next();
             })
             .catch(err => {
@@ -33,7 +33,7 @@ export default class Movie {
                     LoggingDate: Date.now(),
                     Status: false
                 };
-                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD)
+                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD);
                 return next({ result: result, log: log });
             });
     }
@@ -41,7 +41,7 @@ export default class Movie {
         let movies = req.data.movies;
         movieDal.addMultiple(movies)
             .then(succ => {
-                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD_MULTIPLE)
+                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD_MULTIPLE);
                 return next();
             })
             .catch(err => {
@@ -53,7 +53,7 @@ export default class Movie {
                     LoggingDate: Date.now(),
                     Status: false
                 };
-                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE)
+                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE);
                 return next({ result: result, log: log });
             });
     }
@@ -62,10 +62,10 @@ export default class Movie {
         movieDal.delete(movieId)
             .then(result => {
                 if (result == null) {
-                    req.result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE_NOT_FOUND_MOVIE)
-                } else {
-                    req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_DELETE)
+                    let result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE_NOT_FOUND_MOVIE);
+                    return res.status(202).json(result);
                 }
+                req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_DELETE);
                 return next();
             })
             .catch(err => {
@@ -77,7 +77,7 @@ export default class Movie {
                     LoggingDate: Date.now(),
                     Status: false
                 };
-                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE)
+                var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE);
                 return next({ result: result, log: log });
             })
     }
@@ -88,15 +88,15 @@ export default class Movie {
         movieDal.getById(id)
             .then(data => {
                 if (data == null) {
-                    req.result = new DataResult(data, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
-                } else {
-                    req.result = new DataResult(data, true, "");
+                    let result = new DataResult(null, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
+                    return res.json(result);
                 }
+                req.result = new DataResult(data, true, "");
                 return next();
             })
             .catch(err => {
-                var result = new DataResult({}, false, "")
-                return res.json(result)
+                var result = new DataResult({}, false, "");
+                return res.status(500).json(result);
             })
     }
     static getDtoById(req, res, next) {
@@ -104,38 +104,51 @@ export default class Movie {
         movieDal.getDtoById(id)
             .then(data => {
                 if (data == null) {
-                    req.result = new DataResult(data, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
-                } else {
-                    req.result = new DataResult(data, true, "");
+                    let result = new DataResult(null, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
+                    return res.json(result);
                 }
+                req.result = new DataResult(data, true, "");
                 return next();
             })
             .catch(err => {
-                var result = new DataResult({}, false, "")
-                return res.json(result)
+                var result = new DataResult({}, false, "");
+                return res.status(500).json(result);
             })
     }
     static getAll(req, res, next) {
         movieDal.getAll()
             .then(data => {
-                req.result = new DataResult(data, true, "")
+                req.result = new DataResult(data, true, "");
                 return next();
             })
             .catch(err => {
-                console.log(err)
-                var result = new DataResult({}, false, "")
-                return res.json(result)
+                var result = new DataResult({}, false, "");
+                return res.status(500).json(result);
             })
     }
+
     static getAllDto(req, res, next) {
         movieDal.getAllDto()
             .then(data => {
-                req.result = new DataResult(data, true, "")
+                req.result = new DataResult(data, true, "");
                 return next();
             })
             .catch(err => {
-                var result = new DataResult({}, false, "")
-                return res.json(result)
+                var result = new DataResult({}, false, "");
+                return res.status(500).json(result);
+            })
+    }
+
+    static getAllDtoFilter(req, res, next) {
+        let condition = req.data.query ? req.data.query : {};
+        movieDal.getAllDtoFilter(condition)
+            .then(data => {
+                req.result = new DataResult(data, true, "");
+                return next();
+            })
+            .catch(err => {
+                var result = new DataResult({}, false, "");
+                return res.status(500).json(result);
             })
     }
 }

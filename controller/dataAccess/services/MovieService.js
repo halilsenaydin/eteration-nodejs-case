@@ -11,11 +11,16 @@ export default class MovieService extends RepositoryBase {
     }
 
     getAllDto() {
-        const promise = this.model
-            .find()
+        return this.getAllDtoFilter();
+    }
+
+    getAllDtoFilter(condition) {
+        const promise = Movie
+            .find(condition)
             .populate("genres");
         return promise;
     }
+
     getDtoById(id) {
         const promise = this.model
             .findById(id)

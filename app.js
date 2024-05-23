@@ -34,7 +34,7 @@ import movieRoute from './view/routes/MovieRoute.js';
 import genreRoute from './view/routes/GenreRoute.js';
 
 // ORM | Mongoose
-import Database from './utilities/database.js';
+import Database from './utilities/Database.js';
 Database.runMongoose();
 
 const __dirname = path.resolve();
@@ -51,8 +51,14 @@ app.use(homeRoute);
 // Banned User
 // app.use(Authorization.bannedUser);
 
-app.use(RouteConstant.MOVIE_ROUTE_ENDPOINT, movieRoute);
-app.use(RouteConstant.GENRE_ROUTE_ENDPOINT, genreRoute);
+app.use(RouteConstant.V1_MOVIE_ROUTE_ENDPOINT, movieRoute);
+app.use(RouteConstant.V1_GENRE_ROUTE_ENDPOINT, genreRoute);
+
+// Catch not found request
+app.use((req, res, next) => {
+    let result = {}
+    return res.status(404).json(result);
+})
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -61,7 +67,7 @@ app.use((err, req, res, next) => {
         FileLogger.errorLog(err.log);
     }
 
-    return res.json(err.result);
+    return res.status(500).json(err.result);
 })
 
 httpServer.listen(port, () => {
