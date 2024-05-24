@@ -2,6 +2,11 @@
 
 This project was developed over a three-day period as part of the Eteration internship.
 
+
+[Case Definition](https://gitlab.eteration.com/academy/assignments/node-case-study/-/tree/master/case-definition "Case Definition")
+
+[Review Standards](https://gitlab.eteration.com/academy/assignments/node-case-study/-/tree/master/review-standards "Review Standards")
+
 ## Install Project Dependencies
 
 ### Install NVM
@@ -51,3 +56,4 @@ npm start
 ```bash
 npm test
 ```
+## About The Project
