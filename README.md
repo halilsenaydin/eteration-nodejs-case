@@ -7,6 +7,9 @@ This project was developed over a three-day period as part of the Eteration inte
 
 [Review Standards](https://gitlab.eteration.com/academy/assignments/node-case-study/-/tree/master/review-standards "Review Standards")
 
+## Preview The Project
+[Preview Eteration Nodejs Case](https://eteration.kulabuz.com.tr "Preview Eteration Nodejs Case")
+
 ## Install Project Dependencies
 
 ### Install NVM
@@ -62,5 +65,3 @@ npm test
 - __Express JS:__ Requirement For Create a HTTP Server
 - __Jest, Supertest:__ Requirement For Unit and E2E Test
 
-## Preview The Project
-[Preview Eteration Nodejs Case](https://eteration.kulabuz.com.tr "Preview Eteration Nodejs Case")
