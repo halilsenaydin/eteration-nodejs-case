@@ -6,7 +6,7 @@ This project was developed over a three-day period as part of the Eteration inte
 
 ## Install Project Dependencies
 
-# Install NVM
+### Install NVM
 ```bash
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 ```
@@ -18,13 +18,13 @@ exportNVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 ```
 
-# Install Node.js and Npm
+### Install Node.js and Npm
 ```bash
 nvm install node
 nvm install --lts
 ```
 
-# Check Version
+### Check Version
 ```bash
 node --version
 npm -v
@@ -32,24 +32,24 @@ npm -v
 
 ## Run Your Local
 
-# Get Project
+### Get Project
 ```bash
 mkdir -p ~/projects/eteration && cd ~/projects/eteration
 git clone https://github.com/halilsenaydin/eteration-nodejs-case.git
 mv eteration-nodejs-case nodejs && cd nodejs
 ```
 
-# Install node dependencies
+### Install node dependencies
 ```bash
 npm install
 ```
 
-# Run The Project
+### Run The Project
 ```bash
 npm start
 ```
 
-# Run The Tests
+### Run The Tests
 ```bash
 npm test
 ```
