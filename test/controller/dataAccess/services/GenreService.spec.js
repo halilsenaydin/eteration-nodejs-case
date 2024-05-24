@@ -53,6 +53,17 @@ describe('GenreService', () => {
         findMock.mockRestore();
     });
 
+    it('should get all entities with filter', async () => {
+        let mock = [{ _id: "_id1", id: "id1", name: "entity1" }, { _id: "_id2", id: "id2", name: "entity2" }]
+        let filter = { name: "entity1" }
+        const findMock = jest.spyOn(Genre, 'find').mockResolvedValue(mock);
+        const result = await repository.getAllFilter(filter);
+
+        expect(findMock).toHaveBeenCalledWith(filter);
+        expect(result).toEqual(mock);
+        findMock.mockRestore();
+    });
+
     it('should get an entity by id', async () => {
         let mock = { _id: "_id1", id: "id1", name: "entity1" }
         const findByIdMock = jest.spyOn(Genre, 'findById').mockResolvedValue(mock);

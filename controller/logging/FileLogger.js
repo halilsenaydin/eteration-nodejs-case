@@ -12,9 +12,4 @@ export default class FileLogger {
         let path = `${LOG_PATH}//error`
         FileLogger.log(log, path)
     }
-
-    static eventLog(log) {
-        let path = `${LOG_PATH}//event`
-        FileLogger.log(log, path)
-    }
 }

@@ -155,6 +155,44 @@ describe('MovieService', () => {
         findMock.mockRestore();
     });
 
+    it('should get all dto with filter', async () => {
+        const mock = [
+            {
+                _id: "_id1",
+                id: "id1",
+                title: 'test title 1',
+                popularity: 10.1,
+                overview: 'test overview 1',
+                voteAverage: 5.4,
+                voteCount: 1000,
+                releaseDate: '2024-07-06',
+                genres: [{ _id: "_id1", id: "id1", name: "entity1" }, { _id: "_id2", id: "id2", name: "entity2" }]
+            },
+            {
+                _id: "_id2",
+                id: "id2",
+                title: 'test title 2',
+                popularity: 10.2,
+                overview: 'test overview 2',
+                voteAverage: 5.5,
+                voteCount: 1001,
+                releaseDate: '2024-07-07',
+                genres: [{ _id: "_id3", id: "id4", name: "entity2" }, { _id: "_id3", id: "id3", name: "entity3" }]
+            }
+        ];
+        let filter = {
+            title: 'test title 1',
+            popularity: 10.1,
+            overview: 'test overview 1'
+        };
+        const findByIdMock = jest.spyOn(Movie, 'find').mockReturnValue({ populate: jest.fn().mockResolvedValue(mock) });
+        const result = await repository.getAllDtoFilter(filter);
+
+        expect(findByIdMock).toHaveBeenCalledWith(filter);
+        expect(result).toEqual(mock);
+        findByIdMock.mockRestore();
+    });
+
     it('should get an dto by id', async () => {
         let mock = {
             _id: "_id1",
@@ -173,7 +211,6 @@ describe('MovieService', () => {
 
         expect(findByIdMock).toHaveBeenCalledWith('some-id');
         expect(result).toEqual(mock);
-
         findByIdMock.mockRestore();
     });
 });

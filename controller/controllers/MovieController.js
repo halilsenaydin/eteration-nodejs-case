@@ -5,7 +5,7 @@ import SuccessLogConstant from "../constants/logConstants/SuccessLogConstant.js"
 import Result from '../../core/entities/Result.js';
 import DataResult from '../../core/entities/DataResult.js';
 
-const movieDal = new MovieService();
+const movieService = new MovieService();
 export default class MovieController {
     constructor() { }
 
@@ -19,19 +19,19 @@ export default class MovieController {
             releaseDate: req.data.releaseDate,
             genres: req.data.genres
         }
-        movieDal.add(entity)
+        movieService.add(entity)
             .then(succ => {
                 req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD);
                 return next();
             })
             .catch(err => {
                 const log = {
-                    LogTypeId: LogTypeConstant.ERROR_MOVIE,
-                    Caption: ErrorLogConstant.ERROR_MOVIE_ADD,
-                    Content: JSON.stringify(err),
-                    Description: JSON.stringify(entity),
-                    LoggingDate: Date.now(),
-                    Status: false
+                    logTypeId: LogTypeConstant.ERROR_MOVIE,
+                    caption: ErrorLogConstant.ERROR_MOVIE_ADD,
+                    content: JSON.stringify(err),
+                    description: JSON.stringify(entity),
+                    loggingDate: Date.now(),
+                    status: false
                 };
                 var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD);
                 return next({ result: result, log: log });
@@ -39,19 +39,19 @@ export default class MovieController {
     }
     static addMultiple(req, res, next) {
         let movies = req.data.movies;
-        movieDal.addMultiple(movies)
+        movieService.addMultiple(movies)
             .then(succ => {
                 req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD_MULTIPLE);
                 return next();
             })
             .catch(err => {
                 const log = {
-                    LogTypeId: LogTypeConstant.ERROR_MOVIE,
-                    Caption: ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE,
-                    Content: JSON.stringify(err),
-                    Description: JSON.stringify(movies),
-                    LoggingDate: Date.now(),
-                    Status: false
+                    logTypeId: LogTypeConstant.ERROR_MOVIE,
+                    caption: ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE,
+                    content: JSON.stringify(err),
+                    description: JSON.stringify(movies),
+                    loggingDate: Date.now(),
+                    status: false
                 };
                 var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_ADD_MULTIPLE);
                 return next({ result: result, log: log });
@@ -59,7 +59,7 @@ export default class MovieController {
     }
     static destroy(req, res, next) {
         const movieId = req.data.movieId;
-        movieDal.delete(movieId)
+        movieService.delete(movieId)
             .then(result => {
                 if (result == null) {
                     let result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE_NOT_FOUND_MOVIE);
@@ -70,12 +70,12 @@ export default class MovieController {
             })
             .catch(err => {
                 const log = {
-                    LogTypeId: LogTypeConstant.ERROR_MOVIE,
-                    Caption: ErrorLogConstant.ERROR_MOVIE_DELETE,
-                    Content: JSON.stringify(err),
-                    Description: `MovieId: ${movieId}`,
-                    LoggingDate: Date.now(),
-                    Status: false
+                    logTypeId: LogTypeConstant.ERROR_MOVIE,
+                    caption: ErrorLogConstant.ERROR_MOVIE_DELETE,
+                    content: JSON.stringify(err),
+                    description: `MovieId: ${movieId}`,
+                    loggingDate: Date.now(),
+                    status: false
                 };
                 var result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE);
                 return next({ result: result, log: log });
@@ -85,7 +85,7 @@ export default class MovieController {
     // Data
     static getById(req, res, next) {
         let id = req.data.movieId;
-        movieDal.getById(id)
+        movieService.getById(id)
             .then(data => {
                 if (data == null) {
                     let result = new DataResult(null, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
@@ -101,7 +101,7 @@ export default class MovieController {
     }
     static getDtoById(req, res, next) {
         let id = req.data.movieId;
-        movieDal.getDtoById(id)
+        movieService.getDtoById(id)
             .then(data => {
                 if (data == null) {
                     let result = new DataResult(null, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
@@ -116,7 +116,7 @@ export default class MovieController {
             })
     }
     static getAll(req, res, next) {
-        movieDal.getAll()
+        movieService.getAll()
             .then(data => {
                 req.result = new DataResult(data, true, "");
                 return next();
@@ -128,7 +128,7 @@ export default class MovieController {
     }
 
     static getAllDto(req, res, next) {
-        movieDal.getAllDto()
+        movieService.getAllDto()
             .then(data => {
                 req.result = new DataResult(data, true, "");
                 return next();
@@ -141,7 +141,7 @@ export default class MovieController {
 
     static getAllDtoFilter(req, res, next) {
         let condition = req.data.query ? req.data.query : {};
-        movieDal.getAllDtoFilter(condition)
+        movieService.getAllDtoFilter(condition)
             .then(data => {
                 req.result = new DataResult(data, true, "");
                 return next();

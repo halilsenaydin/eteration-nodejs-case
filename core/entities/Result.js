@@ -1,5 +1,5 @@
 export default class Result {
-    constructor(success, message="") {
+    constructor(success, message) {
         this.status = success;
         this.message = message;
     }

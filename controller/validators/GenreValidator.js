@@ -26,7 +26,7 @@ export default class GenreValidator {
                 return res.status(400).json(result);
             }
         }
-        req.result = new Result(true, GenreMessageConstant.VALIDATE_GENRE);
+        req.result = new Result(true, GenreMessageConstant.VALIDATE_GENRE[language]);
         return next();
     }
 

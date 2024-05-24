@@ -44,12 +44,23 @@ describe('RepositoryBase', () => {
 
 
     it('should get all entities', async () => {
-        const findMock = jest.spyOn(Genre, 'find').mockResolvedValue(['entity1', 'entity2']);
+        let mock = [{ name: 'entity1' }, { name: 'entity2' }]
+        const findMock = jest.spyOn(Genre, 'find').mockResolvedValue(mock);
         const result = await repository.getAll();
 
         expect(findMock).toHaveBeenCalled();
-        expect(result).toEqual(['entity1', 'entity2']);
+        expect(result).toEqual(mock);
+        findMock.mockRestore();
+    });
 
+    it('should get all entities with filter ', async () => {
+        let mock = [{ name: 'entity1' }, { name: 'entity2' }]
+        let filter = { name: 'entit1' }
+        const findMock = jest.spyOn(Genre, 'find').mockResolvedValue(mock);
+        const result = await repository.getAllFilter(filter);
+
+        expect(findMock).toHaveBeenCalledWith(filter);
+        expect(result).toBe(mock);
         findMock.mockRestore();
     });
 
