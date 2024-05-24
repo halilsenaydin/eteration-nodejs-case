@@ -1,7 +1,5 @@
 # Eteration Node.js Case
 
-Halil İbrahim ŞENAYDIN
-
 This project was developed over a three-day period as part of the Eteration internship.
 
 ## Install Project Dependencies
