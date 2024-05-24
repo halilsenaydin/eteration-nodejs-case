@@ -56,3 +56,10 @@ npm start
 ```bash
 npm test
 ```
+
+## Projects Dependencies
+- Mongoose: Requirement For MongoDB Connection Using ORM
+- Express JS: Requirement For Create a HTTP Server
+- Jest, Supertest: Requirement For Unit and E2E Test
+
+
