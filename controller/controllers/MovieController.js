@@ -7,9 +7,11 @@ import DataResult from '../../core/entities/DataResult.js';
 
 const movieService = new MovieService();
 export default class MovieController {
-    constructor() { }
+    constructor({ movieService }) {
+        this.movieService = movieService;
+    }
 
-    static add(req, res, next) {
+    add(req, res, next) {
         let entity = {
             title: req.data.title,
             popularity: req.data.popularity,
@@ -19,7 +21,7 @@ export default class MovieController {
             releaseDate: req.data.releaseDate,
             genres: req.data.genres
         }
-        movieService.add(entity)
+        this.movieService.add(entity)
             .then(succ => {
                 req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD);
                 return next();
@@ -37,9 +39,9 @@ export default class MovieController {
                 return next({ result: result, log: log });
             });
     }
-    static addMultiple(req, res, next) {
+    addMultiple(req, res, next) {
         let movies = req.data.movies;
-        movieService.addMultiple(movies)
+        this.movieService.addMultiple(movies)
             .then(succ => {
                 req.result = new Result(true, SuccessLogConstant.SUCCESS_MOVIE_ADD_MULTIPLE);
                 return next();
@@ -57,9 +59,9 @@ export default class MovieController {
                 return next({ result: result, log: log });
             });
     }
-    static destroy(req, res, next) {
+    destroy(req, res, next) {
         const movieId = req.data.movieId;
-        movieService.delete(movieId)
+        this.movieService.delete(movieId)
             .then(result => {
                 if (result == null) {
                     let result = new Result(false, ErrorLogConstant.ERROR_MOVIE_DELETE_NOT_FOUND_MOVIE);
@@ -83,9 +85,9 @@ export default class MovieController {
     }
 
     // Data
-    static getById(req, res, next) {
+    getById(req, res, next) {
         let id = req.data.movieId;
-        movieService.getById(id)
+        this.movieService.getById(id)
             .then(data => {
                 if (data == null) {
                     let result = new DataResult(null, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
@@ -99,9 +101,9 @@ export default class MovieController {
                 return res.status(500).json(result);
             })
     }
-    static getDtoById(req, res, next) {
+    getDtoById(req, res, next) {
         let id = req.data.movieId;
-        movieService.getDtoById(id)
+        this.movieService.getDtoById(id)
             .then(data => {
                 if (data == null) {
                     let result = new DataResult(null, false, ErrorLogConstant.ERROR_MOVIE_GET_BY_ID_NOT_FOUND);
@@ -115,8 +117,8 @@ export default class MovieController {
                 return res.status(500).json(result);
             })
     }
-    static getAll(req, res, next) {
-        movieService.getAll()
+    getAll(req, res, next) {
+        this.movieService.getAll()
             .then(data => {
                 req.result = new DataResult(data, true, "");
                 return next();
@@ -127,8 +129,8 @@ export default class MovieController {
             })
     }
 
-    static getAllDto(req, res, next) {
-        movieService.getAllDto()
+    getAllDto(req, res, next) {
+        this.movieService.getAllDto()
             .then(data => {
                 req.result = new DataResult(data, true, "");
                 return next();
@@ -139,9 +141,9 @@ export default class MovieController {
             })
     }
 
-    static getAllDtoFilter(req, res, next) {
+    getAllDtoFilter(req, res, next) {
         let condition = req.data.query ? req.data.query : {};
-        movieService.getAllDtoFilter(condition)
+        this.movieService.getAllDtoFilter(condition)
             .then(data => {
                 req.result = new DataResult(data, true, "");
                 return next();

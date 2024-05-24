@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors'
 import { createServer } from 'http';
+import { asClass, asValue, createContainer } from 'awilix'
 
+// Swagger
 import swaggerUI from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';
 
@@ -16,25 +18,26 @@ app.use(cors({
     credentials: true
 }));
 
-// Serve Swagger documentation
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 
 import FileLogger from './controller/logging/FileLogger.js';
-import Result from './core/entities/Result.js';
 
 // Imports of routes
 import RouteConstant from './controller/constants/apiConstants/RouteConstant.js';
 import homeRoute from './view/routes/HomeRoute.js';
-import movieRoute from './view/routes/MovieRoute.js';
-import genreRoute from './view/routes/GenreRoute.js';
+import movieRoutes from './view/routes/MovieRoute.js';
+import genreRoutes from './view/routes/GenreRoute.js';
 
 // ORM | Mongoose
 import Database from './utilities/Database.js';
 Database.runMongoose();
+
+// IOC Container
+import Container from './utilities/Container.js';
+const genreController = Container.genreController;
+const movieController = Container.movieController;
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,12 +49,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes Middlewares
 app.use(homeRoute);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
-// Banned User
-// app.use(Authorization.bannedUser);
-
-app.use(RouteConstant.V1_MOVIE_ROUTE_ENDPOINT, movieRoute);
-app.use(RouteConstant.V1_GENRE_ROUTE_ENDPOINT, genreRoute);
+app.use(RouteConstant.V1_MOVIE_ROUTE_ENDPOINT, movieRoutes({ movieController, genreController }));
+app.use(RouteConstant.V1_GENRE_ROUTE_ENDPOINT, genreRoutes({ genreController }));
 
 // Catch not found request
 app.use((req, res, next) => {

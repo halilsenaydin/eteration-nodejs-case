@@ -5,15 +5,16 @@ import SuccessLogConstant from "../constants/logConstants/SuccessLogConstant.js"
 import Result from '../../core/entities/Result.js';
 import DataResult from '../../core/entities/DataResult.js';
 
-const genreService = new GenreService();
 export default class GenreController {
-    constructor() { }
+    constructor({ genreService }) {
+        this.genreService = genreService;
+    }
 
-    static add(req, res, next) {
+    add(req, res, next) {
         let entity = {
             name: req.data.genreName
         }
-        genreService.add(entity)
+        this.genreService.add(entity)
             .then(succ => {
                 req.result = new Result(true, SuccessLogConstant.SUCCESS_GENRE_ADD);
                 return next();
@@ -32,9 +33,9 @@ export default class GenreController {
                 return next({ result: result, log: log });
             });
     }
-    static addMultiple(req, res, next) {
+    addMultiple(req, res, next) {
         let genres = req.data.genres;
-        genreService.addMultiple(genres)
+        this.genreService.addMultiple(genres)
             .then(succ => {
                 req.result = new Result(true, SuccessLogConstant.SUCCESS_GENRE_ADD_MULTIPLE);
                 return next();
@@ -52,9 +53,9 @@ export default class GenreController {
                 return next({ result: result, log: log });
             });
     }
-    static destroy(req, res, next) {
+    destroy(req, res, next) {
         const genreId = req.data.genreId;
-        genreService.delete(genreId)
+        this.genreService.delete(genreId)
             .then(result => {
                 if (result == null) {
                     let result = new Result(false, ErrorLogConstant.ERROR_GENRE_DELETE_NOT_FOUND_GENRE);
@@ -78,9 +79,9 @@ export default class GenreController {
     }
 
     // Data
-    static getAllFilter(req, res, next) {
+    getAllFilter(req, res, next) {
         let query = req.data.query;
-        genreService.getAllFilter(query)
+        this.genreService.getAllFilter(query)
             .then(data => {
                 req.data.genres = data;
                 req.result = new DataResult(data, true, "");
@@ -91,9 +92,9 @@ export default class GenreController {
                 return res.status(500).json(result);
             })
     }
-    static getById(req, res, next) {
+    getById(req, res, next) {
         let id = req.data.genreId;
-        genreService.getById(id)
+        this.genreService.getById(id)
             .then(data => {
                 if (data == null) {
                     let result = new DataResult(null, false, ErrorLogConstant.ERROR_GENRE_GET_BY_ID_NOT_FOUND);
@@ -107,8 +108,8 @@ export default class GenreController {
                 return res.status(500).json(result);
             })
     }
-    static getAll(req, res, next) {
-        genreService.getAll()
+    getAll(req, res, next) {
+        this.genreService.getAll()
             .then(data => {
                 req.data.genres = data;
                 req.result = new DataResult(data, true, "");
