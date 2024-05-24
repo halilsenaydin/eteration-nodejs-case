@@ -9,7 +9,7 @@ const options = {
             version: '1.0.0',
         },
     },
-    apis: ['./view/routes/*.js'], // Belgelemek istediğiniz rotaları buraya ekleyin
+    apis: ['./view/routes/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
