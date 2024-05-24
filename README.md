@@ -56,4 +56,3 @@ npm start
 ```bash
 npm test
 ```
-## About The Project
