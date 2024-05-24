@@ -59,6 +59,8 @@ npm start
 ```bash
 npm test
 ```
+#### Test Result
+<img width="1061" alt="Ekran Resmi 2024-05-24 16 10 17" src="https://github.com/halilsenaydin/eteration-nodejs-case/assets/70847361/a8a8685a-b65e-4414-affd-124f8626872d">
 
 ## Projects Dependencies
 - __Mongoose:__ Requirement For MongoDB Connection Using ORM
