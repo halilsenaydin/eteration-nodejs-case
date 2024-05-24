@@ -8,7 +8,7 @@ This project was developed over a three-day period as part of the Eteration inte
 [Review Standards](https://gitlab.eteration.com/academy/assignments/node-case-study/-/tree/master/review-standards "Review Standards")
 
 ## Preview The Project
-[Preview Eteration Nodejs Case](https://eteration.kulabuz.com.tr "Preview Eteration Nodejs Case")
+[Preview Eteration Node.js Case](https://eteration.kulabuz.com.tr "Preview Eteration Nodejs Case")
 
 ## Install Project Dependencies
 
