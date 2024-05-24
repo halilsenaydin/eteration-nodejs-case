@@ -36,6 +36,7 @@ Database.runMongoose();
 
 // IOC Container
 import Container from './utilities/Container.js';
+import Result from './core/entities/Result.js';
 const genreController = Container.genreController;
 const movieController = Container.movieController;
 
@@ -56,7 +57,7 @@ app.use(RouteConstant.V1_GENRE_ROUTE_ENDPOINT, genreRoutes({ genreController }))
 
 // Catch not found request
 app.use((req, res, next) => {
-    let result = {}
+    let result = new Result(false, "404 Not Found");
     return res.status(404).json(result);
 })
 
