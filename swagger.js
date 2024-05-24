@@ -4,7 +4,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Eteration Case',
+            title: 'Eteration Node.js Case',
             description: 'Eteration Case API Documentation',
             version: '1.0.0',
         },
