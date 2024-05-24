@@ -64,5 +64,5 @@ npm test
 - __Mongoose:__ Requirement For MongoDB Connection Using ORM
 - __Express JS:__ Requirement For Create a HTTP Server
 - __Jest, Supertest:__ Requirement For Unit and E2E Test
-- __awilix__ Requirement For Dependency Injection, IoC Container
+- __awilix:__ Requirement For Dependency Injection, IoC Container
 
